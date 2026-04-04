@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
-import '05_provider_app/main.dart';
-import '08_api_app/api_screen.dart';
+
+// ❌ Ye imports abhi remove kar de (use nahi ho rahe)
+// import 'package:provider/provider.dart';
+// import '05_provider_app/main.dart';
+// import '08_api_app/api_screen.dart';
+
 import '09_user_info_ui_prectis/user_info_screen.dart';
 
 void main() async {
