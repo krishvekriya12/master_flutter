@@ -1,8 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'edit_profile_screen.dart';
 
-class UserInfoScreen extends StatelessWidget {
+class UserInfoScreen extends StatefulWidget {
   const UserInfoScreen({super.key});
+
+  @override
+  State<UserInfoScreen> createState() => _UserInfoScreenState();
+}
+
+class _UserInfoScreenState extends State<UserInfoScreen> {
+  String username = "Tom Cruse";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadName();
+  }
+
+  Future<void> loadName() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      username = prefs.getString('name') ?? "Tom Cruse";
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +70,8 @@ class UserInfoScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    "Tom Cruse",
+                  Text(
+                    username,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 22,
@@ -83,11 +106,7 @@ class UserInfoScreen extends StatelessWidget {
     );
   }
 
-  static Widget _buildTitle(
-    IconData icon,
-    String title, {
-    bool isLogout = false,
-  }) {
+  Widget _buildTitle(IconData icon, String title, {bool isLogout = false}) {
     return ListTile(
       leading: Icon(icon, color: isLogout ? Colors.red : Colors.black),
       title: Text(
@@ -98,7 +117,17 @@ class UserInfoScreen extends StatelessWidget {
         ),
       ),
       trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-      onTap: () {},
+      onTap: title == "Edit Profile"
+          ? () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const EditProfileScreen(),
+                ),
+              );
+              loadName();
+            }
+          : () {},
     );
   }
 }
